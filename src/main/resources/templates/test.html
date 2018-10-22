@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>ECharts</title>
+	<script th:src="@{https://code.jquery.com/jquery-3.0.0.min.js}"></script>
+</head>
+ 
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width:800px; height:300px"></div>
+    
+    <!--Step:2 引入echarts.js-->
+    <script th:src="@{http://echarts.baidu.com/build/dist/echarts.js}"></script>
+    
+    <script type="text/javascript">
+        // 路径配置
+        require.config({
+        	paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+                //echarts:'../common/echarts/'
+            }
+        });
+ 
+     	// 使用柱状图就加载bar模块，按需加载
+        require(['echarts',
+                 'echarts/chart/line'], 
+        		function(ec) {
+		            // 基于准备好的dom，初始化echarts图表
+		            var myChart = ec.init(document.getElementById('main'));
+		            var option = {
+		                tooltip : {
+		                    show : true
+		                },
+		                legend : {
+		                    data : []
+		                },
+		                xAxis : [ {
+		                    type : 'category',
+		                    data : []
+		                } ],
+		                yAxis : [ {
+		                    type : 'value'
+		                } ],
+		                series : []
+		            };
+		            var nums=[];
+		            $.ajax({
+		                type : "POST",
+		                url : "/data/hello",
+		                dataType : "json",
+		                success : function(result) {
+		                    //将从后台接收的json字符串转换成json对象
+		                    var jsonobj = eval(result);
+		                    //给图标标题赋值
+		                    option.legend.data = jsonobj.legend;
+		                    //读取横坐标值
+		                    option.xAxis[0].data = jsonobj.axis;
+		                    var series_arr = jsonobj.series;
+		                    //驱动图表生成的数据内容，数组中每一项代表一个系列的特殊选项及数据
+		                    for(var i = 0; i < series_arr.length; i++) {
+		                        option.series[i] = result.series[i];
+		                    }
+		                    console.log(option.series);
+		                    //过渡控制，隐藏loading（读取中）
+		                    myChart.hideLoading();
+		                     // 为echarts对象加载数据
+		                    /* myChart.setOption({
+		                    	legend:{
+			                    	data : jsonobj.legend
+		                    	},
+		                    	xAxis: {
+		                            data: jsonobj.axis
+		                        },
+		                        series: [{
+		                            // 根据名字对应到相应的系列
+		                            name: '销量',
+		                            data: option.series
+		                        }]
+		                    }); */
+		                    myChart.setOption(option);
+		                }
+		            });
+        		});
+    </script>
+</body>
+</html>
