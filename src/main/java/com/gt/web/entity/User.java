@@ -1,6 +1,7 @@
 package com.gt.web.entity;
 
 public class User {
+	private Integer id;
 	private Integer age;
 	private String  name;
 	private String  sex;
@@ -18,6 +19,12 @@ public class User {
 	}
 	
 	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public Integer getAge() {
 		return age;
 	}

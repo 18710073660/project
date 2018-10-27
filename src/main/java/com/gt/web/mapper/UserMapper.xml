@@ -1,0 +1,19 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gt.web.dao.UserDao">
+	
+	<resultMap type="com.gt.web.entity.User" id="UserList">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="age" column="age"/>
+		<result property="sex" column="sex"/>
+	</resultMap>
+
+<!-- 	<insert id="addStudent" parameterType="Student">
+	    insert into student (name, age) values (#{name}, #{age})
+	</insert> -->
+	
+	<select id="getUserList" parameterType="java.lang.String" resultMap="UserList">
+		select * from user
+	</select>
+	
+</mapper>
