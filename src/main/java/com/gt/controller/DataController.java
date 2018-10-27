@@ -47,25 +47,4 @@ public class DataController {
         return echarts;
     }
 	
-    @RequestMapping("/modular")
-    public String  listUser1(Model model) {
-//        List<User> userList = new ArrayList<User>();
-//        for (int i = 0; i <10; i++) {
-//            userList.add(new User(i,"张三"+i,20+i,"中国广州"));
-//        }
-//        
-//        model.addAttribute("users", userList);
-        return "/echarts-m-modular";
-    }
-    
-    @RequestMapping("/plain")
-    public String  listUser2(Model model) {
-//        List<User> userList = new ArrayList<User>();
-//        for (int i = 0; i <10; i++) {
-//            userList.add(new User(i,"张三"+i,20+i,"中国广州"));
-//        }
-//        
-//        model.addAttribute("users", userList);
-        return "/echarts-m-plain";
-    }
 }
