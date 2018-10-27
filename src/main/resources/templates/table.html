@@ -48,8 +48,7 @@
 	                cardView: false,                    //是否显示详细视图
 	                detailView: false,                  //是否显示父子表
 	                columns: [{
-	                	checkbox:true,
-	                    formatter:stateFormatter
+	                	checkbox:true
 	                },{
 	                    field: 'Number',
 	                    title: '序列号',
@@ -73,26 +72,6 @@
 	                }
 	            });
 	        };
-	 
-	        function stateFormatter(value, row, index) {
-	            if (row.state == true)
-	                return {
-	                    disabled : true,//设置是否可用
-	                    checked : true//设置选中
-	                };
-	            return value;
-	        }
-	        
-	        function getData(){
-		        //bootstrap table 获取选中行数据
-		        var a= $table.bootstrapTable('getSelections');
-		        if(a.length==1){
-		             console.log(a[0].name);
-		        }else{
-		        	alert("请选中一行");
-		        }
-	        }
-
 
 	        //得到查询的参数
 	      oTableInit.queryParams = function (params) {
