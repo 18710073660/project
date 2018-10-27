@@ -14,16 +14,16 @@ import com.gt.entity.Echarts;
 import com.gt.entity.Series;
 
 @Controller
-@RequestMapping("/data")
-public class EchartsController {
-    @RequestMapping("/test")
-    public String  listUser00(Model model) {
-    	return "test";
+@RequestMapping("/table")
+public class TableController {
+    @RequestMapping("/index")
+    public String index(Model model) {
+    	return "table";
     }
-	
-    @RequestMapping("/hello")
+    
+    @RequestMapping("/data")
     @ResponseBody
-    public Echarts  listUser0(Model model) {
+    public Echarts listUser0(Model model) {
     	List<String> legend = new ArrayList<String>();
     	legend.add("测试中...");
     	
@@ -46,11 +46,5 @@ public class EchartsController {
         System.out.println("str:"+str);
         return echarts;
     }
-    
-    @RequestMapping("/table")
-    public String menu(Model model) {
-        return "table";
-    }
-    
 	
 }
