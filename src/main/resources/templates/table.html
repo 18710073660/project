@@ -4,12 +4,12 @@
 	<meta charset="utf-8">
 	<title>Bootstrap 实例 - 标签页（Tab）插件</title>
 	<!--css样式-->
-	<link rel="stylesheet" type="text/css" th:href="@{/static/bootstrap-4.0.0-dist/css/bootstrap.min.css"/>
-	<link rel="stylesheet" type="text/css" th:href="@{/static/bootstrap-4.0.0-dist/css/bootstrap-table.css"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/static/bootstrap-4.0.0-dist/css/bootstrap.min.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/static/bootstrap-4.0.0-dist/css/bootstrap-tables.css}"/>
 	<!--js-->
-	<script type="text/javascript" th:src="@{/static/jquery-2.0.0/jquery.min.js"></script>
-	<script type="text/javascript" th:src="@{/static/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
-	<script type="text/javascript" th:src="@{/static/bootstrap-4.0.0-dist/js/bootstrap-table.js"></script>
+	<script type="text/javascript" th:src="@{/static/jquery-2.0.0/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/bootstrap-4.0.0-dist/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/bootstrap-4.0.0-dist/js/bootstrap-table.js}"></script>
 </head>
 <body>
 	<script type="text/javascript">
@@ -27,8 +27,9 @@
 	        //初始化Table
 	        oTableInit.Init = function () {
 	            $('#myTable').bootstrapTable({
-	                url: '/VenderManager/TradeList',    //请求后台的URL（*）
-	                method: 'post',                     //请求方式（*）
+	                url: '/table/data',    				//请求后台的URL（*）
+	                dataField: 'userList',
+	                method: 'get',                      //请求方式（*）
 	                toolbar: '#toolbar',                //工具按钮用哪个容器
 	                striped: true,                      //是否显示行间隔色
 	                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -39,29 +40,60 @@
 	                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
 	                pageNumber:1,                       //初始化加载第一页，默认第一页
 	                pageSize: 50,                       //每页的记录行数（*）
-	                pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+	                pageList: [5, 10, 20, 30],          //可的每页的行数（*）
 	                strictSearch: true,
 	                clickToSelect: true,                //是否启用点击选中行
 	                height: 460,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
 	                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
 	                cardView: false,                    //是否显示详细视图
-	                detailView: false,                   //是否显示父子表
+	                detailView: false,                  //是否显示父子表
 	                columns: [{
-	                    field: 'id',
-	                    title: '序列号'
+	                	checkbox:true,
+	                    formatter:stateFormatter
+	                },{
+	                    field: 'Number',
+	                    title: '序列号',
+	                    formatter: function (value, row, index) {
+ 							return index+1;
+ 						}
 	                }, {
-	                    field: 'liushuiid',
+	                    field: 'name',
 	                    title: '姓名'
 	                }, {
-	                    field: 'orderid',
+	                    field: 'age',
 	                    title: '年龄'
 	                }, {
-	                    field: 'receivetime',
+	                    field: 'sex',
 	                    title: '性别'
-	                }]
+	                }],
+	             	onClickRow : function(row, tr,flied){
+	             		alert(row);
+	                    //console.log(tr);
+	                    //console.log(flied)         
+	                }
 	            });
 	        };
 	 
+	        function stateFormatter(value, row, index) {
+	            if (row.state == true)
+	                return {
+	                    disabled : true,//设置是否可用
+	                    checked : true//设置选中
+	                };
+	            return value;
+	        }
+	        
+	        function getData(){
+		        //bootstrap table 获取选中行数据
+		        var a= $table.bootstrapTable('getSelections');
+		        if(a.length==1){
+		             console.log(a[0].name);
+		        }else{
+		        	alert("请选中一行");
+		        }
+	        }
+
+
 	        //得到查询的参数
 	      oTableInit.queryParams = function (params) {
 	            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
@@ -84,11 +116,38 @@
 	        return oTableInit;
 	    };
 	</script>
-
-	<div>
-		<table id="myTable">
-	
-		</table>
+		<div>
+			<button id="btn_print" type="button" class="btn btn-default">
+				<span class="glyphicon glyphicon-print" ></span>获取BootstrapTable中CheckBox数据
+			</button>
+		</div>
+		
+		<table id="myTable"></table>
+		
+		<script>
+			$("#btn_print").click(function(){  
+            	var a= $("#myTable").bootstrapTable('getSelections');  
+                if(a.length<=0){  
+                	alert("请选中一行")  
+                }else{  
+                	var b=JSON.stringify( a );  
+                	var url="${pageContext.request.contextPath}/login/datalist";  
+                	$.ajax({  
+                    	dataType: "json",  
+                        traditional:true,//这使json格式的字符不会被转码  
+                        data: {"datalist":b},  
+                        type: "post",   
+                        url: url,  
+                        success : function (data) {  
+                        	alert("成功！");  
+                        },  
+                        error : function (data){  
+                        	alert(data.responseText);  
+                        }  
+                    });  
+                }   
+        	});  
+		</script>
 	</div>
 </body>
 </html>

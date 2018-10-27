@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-import com.gt.entity.Echarts;
-import com.gt.entity.Series;
+import com.gt.entity.TableData;
+import com.gt.entity.User;
 
 @Controller
 @RequestMapping("/table")
@@ -23,28 +23,23 @@ public class TableController {
     
     @RequestMapping("/data")
     @ResponseBody
-    public Echarts listUser0(Model model) {
-    	List<String> legend = new ArrayList<String>();
-    	legend.add("测试中...");
+    public TableData listUser0(Model model) {
+    	List<User> userList = new ArrayList<User>();
     	
-    	List<String> axis = new ArrayList<String>();
-    	axis.add("衬衫2");
-    	axis.add("羊毛衫");
-    	axis.add("雪纺衫");
-    	axis.add("裤子");
-    	axis.add("高跟鞋");
-    	axis.add("袜子");
-    	axis.add("拖鞋");
+    	userList.add(new User(20, "张一", "男"));
+    	userList.add(new User(30, "张二", "女"));
+    	userList.add(new User(40, "张三", "男"));
+    	userList.add(new User(50, "张四", "女"));
+    	userList.add(new User(60, "张六", "男"));
+    	userList.add(new User(70, "张七", "女"));
     	
+    	TableData td = new TableData();
+    	td.setRows(userList);
     	
-        List<Series> series = new ArrayList<Series>();
-        series.add(new Series("销量", "line", new ArrayList<Integer>(Arrays.asList(5, 20, 90, 10, 10, 20, 33))));
-        series.add(new Series("销量", "line", new ArrayList<Integer>(Arrays.asList(15, 30, 20, 40, 70, 10, 13))));
-        Echarts echarts = new Echarts(legend, axis, series);
         Gson gson = new Gson();
-        String str = gson.toJson(echarts);
-        System.out.println("str:"+str);
-        return echarts;
+        String str = gson.toJson(td);
+        //System.out.println("str:"+str);
+        return td;
     }
 	
 }
