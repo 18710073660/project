@@ -1,4 +1,4 @@
-package com.gt.entity;
+package com.gt.web.entity;
 
 import java.util.List;
 

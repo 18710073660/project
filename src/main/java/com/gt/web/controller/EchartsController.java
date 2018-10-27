@@ -1,4 +1,4 @@
-package com.gt.controller;
+package com.gt.web.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-import com.gt.entity.Echarts;
-import com.gt.entity.Series;
+import com.gt.web.entity.Echarts;
+import com.gt.web.entity.Series;
 
 @Controller
 @RequestMapping("/data")

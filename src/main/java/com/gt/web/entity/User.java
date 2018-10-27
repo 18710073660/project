@@ -1,4 +1,4 @@
-package com.gt.entity;
+package com.gt.web.entity;
 
 public class User {
 	private Integer age;
