@@ -46,5 +46,11 @@ public class DataController {
         System.out.println("str:"+str);
         return echarts;
     }
+    
+    @RequestMapping("/menu")
+    public String menu(Model model) {
+    	
+        return "menu";
+    }
 	
 }
