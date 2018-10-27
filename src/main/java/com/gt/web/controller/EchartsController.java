@@ -47,10 +47,4 @@ public class EchartsController {
         return echarts;
     }
     
-    @RequestMapping("/table")
-    public String menu(Model model) {
-        return "table";
-    }
-    
-	
 }

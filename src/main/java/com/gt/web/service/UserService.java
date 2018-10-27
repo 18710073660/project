@@ -12,12 +12,16 @@ import com.gt.web.entity.User;
 public class UserService {
 	
 	@Autowired
-	private UserDao userMapper;
+	private UserDao userDao;
 	
 	public List<User> getUserList(){
 		System.out.println("UserService--getUserList()");
-		return userMapper.getUserList();
+		return userDao.getUserList();
 	}
 	
+	
+	public User getUserById(String id){
+		return userDao.getUserById(id);
+	}
 
 }

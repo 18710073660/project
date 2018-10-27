@@ -27,7 +27,7 @@
 	        //初始化Table
 	        oTableInit.Init = function () {
 	            $('#myTable').bootstrapTable({
-	                url: '/table/data',    				//请求后台的URL（*）
+	                url: '/table/list',    				//请求后台的URL（*）
 	                dataField: 'userList',
 	                method: 'get',                      //请求方式（*）
 	                toolbar: '#toolbar',                //工具按钮用哪个容器
@@ -64,12 +64,7 @@
 	                }, {
 	                    field: 'sex',
 	                    title: '性别'
-	                }],
-	             	onClickRow : function(row, tr,flied){
-	             		alert(row);
-	                    //console.log(tr);
-	                    //console.log(flied)         
-	                }
+	                }]
 	            });
 	        };
 
@@ -106,11 +101,15 @@
 		<script>
 			$("#btn_print").click(function(){  
             	var a= $("#myTable").bootstrapTable('getSelections');  
-                if(a.length<=0){  
-                	alert("请选中一行")  
-                }else{  
-                	var b=JSON.stringify( a );  
-                	var url="${pageContext.request.contextPath}/login/datalist";  
+                if(a.length <= 1){  
+                	alert("请选中至少两行")  
+                }else{
+					var arr = new Array();
+					for(var i in a){
+						arr[i] = a[i].id;
+					}
+                	var b = JSON.stringify(arr).replace("[","").replace("]","");  
+                	var url="/table/getEchartData";  
                 	$.ajax({  
                     	dataType: "json",  
                         traditional:true,//这使json格式的字符不会被转码  
@@ -118,7 +117,7 @@
                         type: "post",   
                         url: url,  
                         success : function (data) {  
-                        	alert("成功！");  
+                        	window.location.href = "/table/toMyEcharts";
                         },  
                         error : function (data){  
                         	alert(data.responseText);  

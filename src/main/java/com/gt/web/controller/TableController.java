@@ -1,11 +1,14 @@
 package com.gt.web.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
@@ -16,17 +19,17 @@ import com.gt.web.service.UserService;
 @Controller
 @RequestMapping("/table")
 public class TableController {
-	
 	@Autowired
 	private UserService userService;
 	
+	List<User> userList = new ArrayList<User>();
 	
     @RequestMapping("/index")
     public String index(Model model) {
     	return "table";
     }
     
-    @RequestMapping("/data")
+    @RequestMapping("/list")
     @ResponseBody
     public TableData listUser0(Model model) {
     	List<User> userList = userService.getUserList();
@@ -38,6 +41,26 @@ public class TableController {
         String str = gson.toJson(td);
         System.out.println("str:"+str);
         return td;
+    }
+    
+    @RequestMapping("/getEchartData")
+    @ResponseBody
+    public void getDataByParam(Model model,@RequestParam("datalist") String datalist) {
+    	List<String> list = Arrays.asList(datalist.split(","));
+    	for (String str : list) {
+			userList.add(userService.getUserById(str));
+		}
+    }
+    
+    @RequestMapping("/toMyEcharts")
+    public String  toMyEcharts(Model model) {
+    	return "userEcharts";
+    }
+    
+    @RequestMapping("/prepareDataForEcharts")
+    @ResponseBody
+    public List<User> prepareDataForEcharts(Model model) {
+    	return userList;
     }
 	
 }
