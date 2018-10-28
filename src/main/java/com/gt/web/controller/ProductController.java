@@ -18,7 +18,6 @@ import com.gt.web.entity.Echarts;
 import com.gt.web.entity.Product;
 import com.gt.web.entity.Series;
 import com.gt.web.entity.TableData;
-import com.gt.web.entity.User;
 import com.gt.web.service.ProductService;
 
 @Controller
