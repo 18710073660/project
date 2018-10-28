@@ -21,15 +21,15 @@ import com.gt.web.entity.User;
 import com.gt.web.service.UserService;
 
 @Controller
-@RequestMapping("/table")
-public class TableController {
-	private final Logger logger = LoggerFactory.getLogger(TableController.class); 
+@RequestMapping("/user")
+public class UserController {
+	private final Logger logger = LoggerFactory.getLogger(UserController.class); 
 	@Autowired
 	private UserService userService;
 	
     @RequestMapping("/index")
     public String index(Model model) {
-    	return "table";
+    	return "user";
     }
     
     @RequestMapping("/list")

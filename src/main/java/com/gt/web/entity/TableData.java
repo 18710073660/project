@@ -2,14 +2,14 @@ package com.gt.web.entity;
 
 import java.util.List;
 
-public class TableData {
-	private List<User> rows;
+public class TableData<E> {
+	private List<E> rows;
 
-	public List<User> getRows() {
+	public List<E> getRows() {
 		return rows;
 	}
 
-	public void setRows(List<User> rows) {
+	public void setRows(List<E> rows) {
 		this.rows = rows;
 	}
 	

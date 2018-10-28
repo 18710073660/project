@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="utf-8">
-	<title>Bootstrap 实例 - 标签页（Tab）插件</title>
+	<meta charset="UTF-8">
+	<title>jQuery课程表选项卡滑动切换代码</title>
 	<!--css样式-->
-	<link rel="stylesheet" type="text/css" th:href="@{/static/bootstrap-4.0.0-dist/css/bootstrap.min.css}"/>
-	<link rel="stylesheet" type="text/css" th:href="@{/static/bootstrap-4.0.0-dist/css/bootstrap-table.css}"/>
-	<!--js-->
+	<link type="text/css" rel="stylesheet" th:href="@{/static/bootstrap-4.0.0-dist/css/bootstrap.min.css}"/>
+	<link type="text/css" rel="stylesheet" th:href="@{/static/bootstrap-4.0.0-dist/css/bootstrap-table.css}"/>
+	<link type="text/css" rel="stylesheet" th:href="@{/static/css/common.css}"/>
+	<link type="text/css" rel="stylesheet" th:href="@{/static/css/style.css}"/>
+	<!--js引入-->
 	<script type="text/javascript" th:src="@{/static/jquery-2.0.0/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/static/bootstrap-4.0.0-dist/js/bootstrap.min.js}"></script>
 	<script type="text/javascript" th:src="@{/static/bootstrap-4.0.0-dist/js/bootstrap-table.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/tab.js}"></script>
 </head>
 <body>
 	<script type="text/javascript">
@@ -26,7 +29,7 @@
 	        var oTableInit = new Object();
 	        //初始化Table
 	        oTableInit.Init = function () {
-	            $('#myTable').bootstrapTable({
+	            $('#myFirstTable').bootstrapTable({
 	                url: '/user/list',    				//请求后台的URL（*）
 	                dataField: 'userList',
 	                method: 'get',                      //请求方式（*）
@@ -90,29 +93,31 @@
 	        return oTableInit;
 	    };
 	</script>
-		<div>
-			<button id="btn_print" type="button" class="btn btn-default">
-				<span class="glyphicon glyphicon-print" ></span>生成折线图
-			</button>
+	<div style="width:100%; height:100%; z-index:1">
+		<h1 class="titleH1 underNone clearfix">
+			<span class="left underNone underLine">数据展示</span>
+		</h1>
+		<div class="jyTable">
+			<div class="clearfix">
+				<ul class="title title1 left">
+					<li class='cur'>用户信息</li>
+					<li>销售情况</li>
+					<li>星期三</li>
+					<li>星期四</li>
+				</ul>
+			</div>
+			<div class='zong'>
+				<div class="list list1">
+					<div class="tabCon">
+						<table id="myFirstTable"></table>
+					</div>
+		
+					<div class="tabCon">
+						<table id="mySecondTable"></table>
+					</div>
+				</div>
+			</div>
 		</div>
-		
-		<table id="myTable"></table>
-		
-		<script>
-			$("#btn_print").click(function(){  
-            	var a= $("#myTable").bootstrapTable('getSelections');  
-                if(a.length <= 1){  
-                	alert("请选中至少两行")  
-                }else{
-					var arr = new Array();
-					for(var i in a){
-						arr[i] = a[i].id;
-					}
-                	var b = JSON.stringify(arr).replace("[","").replace("]","");  
-                    window.location.href = "/user/toMyEcharts?param="+b;
-                }   
-        	});  
-		</script>
 	</div>
 </body>
 </html>
