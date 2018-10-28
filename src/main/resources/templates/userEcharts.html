@@ -65,20 +65,6 @@
 		                    console.log(option.series);
 		                    //过渡控制，隐藏loading（读取中）
 		                    myChart.hideLoading();
-		                     // 为echarts对象加载数据
-		                    /* myChart.setOption({
-		                    	legend:{
-			                    	data : jsonobj.legend
-		                    	},
-		                    	xAxis: {
-		                            data: jsonobj.axis
-		                        },
-		                        series: [{
-		                            // 根据名字对应到相应的系列
-		                            name: '销量',
-		                            data: option.series
-		                        }]
-		                    }); */
 		                    myChart.setOption(option);
 		                }
 		            });

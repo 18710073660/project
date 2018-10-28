@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.gt.web.entity.Echarts;
+import com.gt.web.entity.Series;
 import com.gt.web.entity.TableData;
 import com.gt.web.entity.User;
 import com.gt.web.service.UserService;
@@ -22,7 +24,7 @@ public class TableController {
 	@Autowired
 	private UserService userService;
 	
-	List<User> userList = new ArrayList<User>();
+	List<User> userList = null;
 	
     @RequestMapping("/index")
     public String index(Model model) {
@@ -45,11 +47,13 @@ public class TableController {
     
     @RequestMapping("/getEchartData")
     @ResponseBody
-    public void getDataByParam(Model model,@RequestParam("datalist") String datalist) {
+    public List<User> getDataByParam(Model model,@RequestParam("datalist") String datalist) {
     	List<String> list = Arrays.asList(datalist.split(","));
+    	userList = new ArrayList<User>();
     	for (String str : list) {
-			userList.add(userService.getUserById(str));
+    		userList.add(userService.getUserById(str));
 		}
+    	return userList;
     }
     
     @RequestMapping("/toMyEcharts")
@@ -59,8 +63,25 @@ public class TableController {
     
     @RequestMapping("/prepareDataForEcharts")
     @ResponseBody
-    public List<User> prepareDataForEcharts(Model model) {
-    	return userList;
+    public Echarts prepareDataForEcharts(Model model) {
+    	List<String> legend = new ArrayList<String>();
+    	legend.add("年龄折线图");
+    	
+    	List<String> axisList = new ArrayList<String>();
+    	List<Integer> series = new ArrayList<Integer>();
+    	for (User user : userList) {
+    		axisList.add(user.getName());
+			series.add(user.getAge());
+		}
+    	
+        List<Series> seriesList = new ArrayList<Series>();
+        seriesList.add(new Series("销量", "line", new ArrayList<Integer>(series)));
+        Echarts echarts = new Echarts(legend, axisList, seriesList);
+        Gson gson = new Gson();
+        String str = gson.toJson(echarts);
+        System.out.println("str:"+str);
+        
+    	return echarts;
     }
 	
 }
