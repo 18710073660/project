@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,10 +23,9 @@ import com.gt.web.service.UserService;
 @Controller
 @RequestMapping("/table")
 public class TableController {
+	private final Logger logger = LoggerFactory.getLogger(TableController.class); 
 	@Autowired
 	private UserService userService;
-	
-	List<User> userList = null;
 	
     @RequestMapping("/index")
     public String index(Model model) {
@@ -41,29 +42,26 @@ public class TableController {
     	
         Gson gson = new Gson();
         String str = gson.toJson(td);
-        System.out.println("str:"+str);
+        logger.info("str:"+str);
         return td;
     }
     
-    @RequestMapping("/getEchartData")
-    @ResponseBody
-    public List<User> getDataByParam(Model model,@RequestParam("datalist") String datalist) {
-    	List<String> list = Arrays.asList(datalist.split(","));
-    	userList = new ArrayList<User>();
-    	for (String str : list) {
-    		userList.add(userService.getUserById(str));
-		}
-    	return userList;
-    }
-    
     @RequestMapping("/toMyEcharts")
-    public String  toMyEcharts(Model model) {
+    public String toMyEcharts(Model model,@RequestParam("param") String param) {
+    	model.addAttribute("param", param);
     	return "userEcharts";
     }
     
     @RequestMapping("/prepareDataForEcharts")
     @ResponseBody
-    public Echarts prepareDataForEcharts(Model model) {
+    public Echarts prepareDataForEcharts(Model model,@RequestParam("param") String param) {
+    	List<String> list = Arrays.asList(param.split(","));
+    	List<User> userList = new ArrayList<User>();
+    	for (String str : list) {
+    		userList.add(userService.getUserById(str));
+		}
+    	
+    	
     	List<String> legend = new ArrayList<String>();
     	legend.add("年龄折线图");
     	
@@ -75,11 +73,11 @@ public class TableController {
 		}
     	
         List<Series> seriesList = new ArrayList<Series>();
-        seriesList.add(new Series("销量", "line", new ArrayList<Integer>(series)));
+        seriesList.add(new Series("年龄", "line", new ArrayList<Integer>(series)));
         Echarts echarts = new Echarts(legend, axisList, seriesList);
         Gson gson = new Gson();
         String str = gson.toJson(echarts);
-        System.out.println("str:"+str);
+        logger.info("str:"+str);
         
     	return echarts;
     }

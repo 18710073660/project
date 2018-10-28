@@ -14,7 +14,7 @@
     <!--Step:2 引入echarts.js-->
     <script th:src="@{http://echarts.baidu.com/build/dist/echarts.js}"></script>
     
-    <script type="text/javascript">
+    <script type="text/javascript" th:inline="javascript">
         // 路径配置
         require.config({
         	paths: {
@@ -46,9 +46,10 @@
 		                series : []
 		            };
 		            var nums=[];
+		            var param = [[${param}]];
 		            $.ajax({
-		                type : "POST",
-		                url : "/table/prepareDataForEcharts",
+		                type : "get",
+		                url : "/table/prepareDataForEcharts?param="+param.param,
 		                dataType : "json",
 		                success : function(result) {
 		                    //将从后台接收的json字符串转换成json对象

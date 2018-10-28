@@ -109,21 +109,7 @@
 						arr[i] = a[i].id;
 					}
                 	var b = JSON.stringify(arr).replace("[","").replace("]","");  
-                	var url="/table/getEchartData";  
-                	$.ajax({  
-                    	dataType: "json",  
-                        traditional:true,//这使json格式的字符不会被转码  
-                        data: {"datalist":b},  
-                        type: "post",   
-                        url: url,  
-                        success : function (data) { 
-                        	window.location.href = "/table/toMyEcharts";
-                        },  
-                        error : function (data){  
-							console.log(data);
-                        	alert(data.responseText);  
-                        }  
-                    });  
+                    window.location.href = "/table/toMyEcharts?param="+b;
                 }   
         	});  
 		</script>
